@@ -34,7 +34,7 @@ publishing {
     publications {
         register<MavenPublication>("jMatrix") {
             from(components["java"])
-            artifactId = "jmatrix-1.0-SNAPSHOT"
+            artifactId = "jmatrix-1.0-snapshot"
         }
     }
 }
