@@ -26,14 +26,15 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/luckelixir/jMatrix")
             credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                username = project.findProperty("jMatrix.user") as String? ?: System.getenv("USERNAME")
+                password = project.findProperty("jMatrix.key") as String? ?: System.getenv("TOKEN")
             }
         }
     }
     publications {
-        register<MavenPublication>("gpr") {
+        register<MavenPublication>("jMatrix") {
             from(components["java"])
+            artifactId = "jmatrix-1.0"
         }
     }
 }
