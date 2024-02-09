@@ -1,11 +1,11 @@
 package personal.luckelixir.jmatrix;
-
 import java.util.Arrays;
 
 public class DoubleMatrix implements Matrix<Double> {
     private double[][] matrix;
     private int rows;
     private int columns;
+    private int[] cursor = {0, 0};
 
     // Generate an empty
     public DoubleMatrix(int rows, int columns) {
@@ -38,7 +38,7 @@ public class DoubleMatrix implements Matrix<Double> {
     }
 
     @Override
-    public Matrix<Double> copy() throws SizeDifferenceException {
+    public Matrix<Double> copy() {
         return new DoubleMatrix(this.matrix);
     }
 
@@ -66,6 +66,21 @@ public class DoubleMatrix implements Matrix<Double> {
             }
         }
         return min;
+    }
+
+    @Override
+    public void push(Double val) {
+        if (cursor[0] >= getRows()) {
+            throw new IndexOutOfBoundsException("Cursor is in an invalid location");
+        }
+
+        if (cursor[1] >= getColumns() && cursor[0] < getRows()) {
+            cursor[0]++;
+            cursor[1] = 0;
+        }
+
+        this.put(cursor[0], cursor[1], val);
+        cursor[1]++;
     }
 
     public DoubleMatrix(double[][] matrix) {
@@ -96,7 +111,6 @@ public class DoubleMatrix implements Matrix<Double> {
                 this.put(i, j, this.get(i, j) + addend);
             }
         }
-
     }
 
     @Override
@@ -127,20 +141,22 @@ public class DoubleMatrix implements Matrix<Double> {
 
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.columns; j++) {
-                if (Double.toString(matrix[i][j]).length() > maxJustification) {
-                    maxJustification = Double.toString(matrix[i][j]).length();
+                String testVal = String.format("%.4f", matrix[i][j]);
+                if (testVal.length() > maxJustification) {
+                    maxJustification = testVal.length();
                 }
             }
         }
-
+        maxJustification++;
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.columns; j++) {
-                stringArray[i][j] = String.format("%" + maxJustification + "d", matrix[i][j]);
+                stringArray[i][j] = String.format("%" + maxJustification + ".4f", matrix[i][j]);
             }
         }
 
         return Arrays.deepToString(stringArray).replace("],", "]\n").replace(",", "");
     }
+
 
 
 }

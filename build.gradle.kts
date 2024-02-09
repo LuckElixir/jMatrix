@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "personal.luckelixir.jmatrix"
-version = "1.0-SNAPSHOT"
+version = "1.0-SNAPSHOT2"
 
 repositories {
     mavenCentral()
@@ -34,7 +34,7 @@ publishing {
     publications {
         register<MavenPublication>("jMatrix") {
             from(components["java"])
-            artifactId = "jmatrix-1.0-snapshot"
+            artifactId = "jmatrix-1.0-snapshot2"
         }
     }
 }

@@ -1,24 +1,34 @@
 package personal.luckelixir.jmatrix;
 
-import java.util.Iterator;
-
 /**
  * A table of numbers supporting basic numerical operations
  * @param <T>
  */
 public interface Matrix<T> {
-    public void addToMatrix(Matrix<T> matrix) throws SizeDifferenceException;
-    public void addToMatrix(T addend);
-    public void subtractfromMatrix(Matrix<T> matrix) throws SizeDifferenceException;
-    public void subtractfromMatrix(T subtractend);
-    public T get(int row, int column);
-    public void put(int row, int column, T value);
-    public int getRows();
-    public int getColumns();
-    public void scale(T scalar);
-    public Matrix<T> copy() throws SizeDifferenceException;
-    public T max();
-    public T min();
+
+
+    void addToMatrix(Matrix<T> matrix) throws SizeDifferenceException;
+    void addToMatrix(T addend);
+    void subtractfromMatrix(Matrix<T> matrix) throws SizeDifferenceException;
+    void subtractfromMatrix(T subtractend);
+    T get(int row, int column);
+    default T get(int[] cursor) {
+        return this.get(cursor[0], cursor[1]);
+    }
+    void put(int row, int column, T value);
+    int getRows();
+    int getColumns();
+    void scale(T scalar);
+    Matrix<T> copy() throws SizeDifferenceException;
+    T max();
+    T min();
+    /**
+     * Used alongside streams, this method uses the cursor attribute and iterates over the list while pushing values to it
+     * Once the cursor is all the way to the end the matrix cannot be pushed anymore
+     */
+    void push(T val);
+    String toString();
+
 
 
 }

@@ -6,17 +6,21 @@ public class IntMatrix implements Matrix<Integer> {
     private int[][] matrix;
     private int rows;
     private int columns;
+    private int[] cursor = {0, 0};
 
     // Generate an empty
     public IntMatrix(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         matrix = new int[rows][columns];
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                matrix[r][c] = 0;
-            }
-        }
+
+    }
+
+    public IntMatrix(int[][] matrix) {
+        this.columns = matrix.length;
+        this.rows = matrix[0].length;
+        this.matrix = matrix;
+
     }
 
     public int getRows() {
@@ -38,7 +42,7 @@ public class IntMatrix implements Matrix<Integer> {
     }
 
     @Override
-    public Matrix<Integer> copy() throws SizeDifferenceException {
+    public Matrix<Integer> copy() {
         return new IntMatrix(this.matrix);
     }
 
@@ -68,19 +72,10 @@ public class IntMatrix implements Matrix<Integer> {
         return min;
     }
 
-    public IntMatrix(int[][] matrix) {
-        this.columns = matrix.length;
-        this.rows = matrix[0].length;
-        this.matrix = matrix;
-
-    }
-
-
     @Override
     public void addToMatrix(Matrix<Integer> matrix) throws SizeDifferenceException {
         if (this.rows != matrix.getRows() || this.columns != matrix.getColumns()) {
-            throw new SizeDifferenceException(String.format("Sizes of matrices are different: %1$d by %2$d merging into " +
-                    "%3$d by %4$d", this.rows, this.columns, matrix.getRows(), matrix.getColumns()));
+            throw new SizeDifferenceException(String.format("Sizes of matrices are different: %1$d by %2$d merging into " + "%3$d by %4$d", this.rows, this.columns, matrix.getRows(), matrix.getColumns()));
         }
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.columns; j++) {
@@ -121,14 +116,29 @@ public class IntMatrix implements Matrix<Integer> {
         matrix[row][column] = value;
     }
 
+    @Override
+    public void push(Integer val) {
+        if (cursor[0] >= getRows()) {
+            throw new IndexOutOfBoundsException("Cursor is in an invalid location");
+        }
+
+        if (cursor[1] >= getColumns() && cursor[0] < getRows()) {
+            cursor[0]++;
+            cursor[1] = 0;
+        }
+
+        this.put(cursor[0], cursor[1], val);
+        cursor[1]++;
+    }
+
     public String toString() {
         String[][] stringArray = new String[rows][columns];
         int maxJustification = 0;
 
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.columns; j++) {
-                if (Integer.toString(matrix[i][j]).length() > maxJustification) {
-                    maxJustification = Integer.toString(matrix[i][j]).length();
+                if (String.valueOf(matrix[i][j]).length() > maxJustification) {
+                    maxJustification = String.valueOf(matrix[i][j]).length();
                 }
             }
         }
@@ -140,6 +150,7 @@ public class IntMatrix implements Matrix<Integer> {
         }
 
         return Arrays.deepToString(stringArray).replace("],", "]\n").replace(",", "");
+
     }
 
 

@@ -1,10 +1,12 @@
 package personal.luckelixir.jmatrix;
+
 import java.util.Arrays;
 
 public class LongMatrix implements Matrix<Long> {
     private long[][] matrix;
     private int rows;
     private int columns;
+    private int[] cursor = {0, 0};
 
     // Generate an empty
     public LongMatrix(int rows, int columns) {
@@ -38,7 +40,7 @@ public class LongMatrix implements Matrix<Long> {
     }
 
     @Override
-    public Matrix<Long> copy() throws SizeDifferenceException {
+    public Matrix<Long> copy() {
         return new LongMatrix(this.matrix);
     }
 
@@ -66,6 +68,21 @@ public class LongMatrix implements Matrix<Long> {
             }
         }
         return min;
+    }
+
+    @Override
+    public void push(Long val) {
+        if (cursor[0] >= getRows()) {
+            throw new IndexOutOfBoundsException("Cursor is in an invalid location");
+        }
+
+        if (cursor[1] >= getColumns() && cursor[0] < getRows()) {
+            cursor[0]++;
+            cursor[1] = 0;
+        }
+
+        this.put(cursor[0], cursor[1], val);
+        cursor[1]++;
     }
 
     public LongMatrix(long[][] matrix) {
@@ -141,7 +158,6 @@ public class LongMatrix implements Matrix<Long> {
 
         return Arrays.deepToString(stringArray).replace("],", "]\n").replace(",", "");
     }
-
 
 
 }
