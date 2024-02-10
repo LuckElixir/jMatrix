@@ -70,13 +70,13 @@ public class DoubleMatrix implements Matrix<Double> {
 
     @Override
     public void push(Double val) {
-        if (cursor[0] >= getRows()) {
-            throw new IndexOutOfBoundsException("Cursor is in an invalid location");
-        }
-
         if (cursor[1] >= getColumns() && cursor[0] < getRows()) {
             cursor[0]++;
             cursor[1] = 0;
+        }
+
+        if (cursor[0] >= getRows()) {
+            throw new IndexOutOfBoundsException(String.format("Cursor location (%d, %d) out of bounds for matrix of size (%d, %d)", cursor[0], cursor[1], rows, columns));
         }
 
         this.put(cursor[0], cursor[1], val);
@@ -114,14 +114,14 @@ public class DoubleMatrix implements Matrix<Double> {
     }
 
     @Override
-    public void subtractfromMatrix(Matrix<Double> matrix) throws SizeDifferenceException {
+    public void subtractFromMatrix(Matrix<Double> matrix) throws SizeDifferenceException {
         Matrix<Double> tmpMatrix = matrix.copy();
         tmpMatrix.scale(-1d);
         this.addToMatrix(matrix);
     }
 
     @Override
-    public void subtractfromMatrix(Double subtractend) {
+    public void subtractFromMatrix(Double subtractend) {
         this.addToMatrix(-(subtractend));
     }
 
@@ -143,11 +143,10 @@ public class DoubleMatrix implements Matrix<Double> {
             for (int j = 0; j < this.columns; j++) {
                 String testVal = String.format("%.4f", matrix[i][j]);
                 if (testVal.length() > maxJustification) {
-                    maxJustification = testVal.length();
+                    maxJustification = testVal.length() + 1;
                 }
             }
         }
-        maxJustification++;
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.columns; j++) {
                 stringArray[i][j] = String.format("%" + maxJustification + ".4f", matrix[i][j]);

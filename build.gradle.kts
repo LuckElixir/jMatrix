@@ -5,15 +5,17 @@ plugins {
 }
 
 group = "personal.luckelixir.jmatrix"
-version = "1.0-SNAPSHOT2"
+version = "1.0"
 
 repositories {
     mavenCentral()
+
 }
 
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
 }
 
 tasks.test {
@@ -34,7 +36,8 @@ publishing {
     publications {
         register<MavenPublication>("jMatrix") {
             from(components["java"])
-            artifactId = "jmatrix-1.0-snapshot2"
+            artifactId = "jmatrix-1.0"
         }
+
     }
 }

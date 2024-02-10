@@ -9,8 +9,8 @@ public interface Matrix<T> {
 
     void addToMatrix(Matrix<T> matrix) throws SizeDifferenceException;
     void addToMatrix(T addend);
-    void subtractfromMatrix(Matrix<T> matrix) throws SizeDifferenceException;
-    void subtractfromMatrix(T subtractend);
+    void subtractFromMatrix(Matrix<T> matrix) throws SizeDifferenceException;
+    void subtractFromMatrix(T subtractend);
     T get(int row, int column);
     default T get(int[] cursor) {
         return this.get(cursor[0], cursor[1]);

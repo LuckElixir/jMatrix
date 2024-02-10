@@ -72,13 +72,13 @@ public class LongMatrix implements Matrix<Long> {
 
     @Override
     public void push(Long val) {
-        if (cursor[0] >= getRows()) {
-            throw new IndexOutOfBoundsException("Cursor is in an invalid location");
-        }
-
         if (cursor[1] >= getColumns() && cursor[0] < getRows()) {
             cursor[0]++;
             cursor[1] = 0;
+        }
+
+        if (cursor[0] >= getRows()) {
+            throw new IndexOutOfBoundsException(String.format("Cursor location (%d, %d) out of bounds for matrix of size (%d, %d)", cursor[0], cursor[1], rows, columns));
         }
 
         this.put(cursor[0], cursor[1], val);
@@ -117,14 +117,14 @@ public class LongMatrix implements Matrix<Long> {
     }
 
     @Override
-    public void subtractfromMatrix(Matrix<Long> matrix) throws SizeDifferenceException {
+    public void subtractFromMatrix(Matrix<Long> matrix) throws SizeDifferenceException {
         Matrix<Long> tmpMatrix = matrix.copy();
         tmpMatrix.scale(-1L);
         this.addToMatrix(matrix);
     }
 
     @Override
-    public void subtractfromMatrix(Long subtractend) {
+    public void subtractFromMatrix(Long subtractend) {
         this.addToMatrix(-(subtractend));
     }
 
