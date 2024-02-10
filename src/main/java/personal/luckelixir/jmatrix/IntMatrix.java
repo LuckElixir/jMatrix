@@ -95,14 +95,14 @@ public class IntMatrix implements Matrix<Integer> {
     }
 
     @Override
-    public void subtractfromMatrix(Matrix<Integer> matrix) throws SizeDifferenceException {
+    public void subtractFromMatrix(Matrix<Integer> matrix) throws SizeDifferenceException {
         Matrix<Integer> tmpMatrix = matrix.copy();
         tmpMatrix.scale(-1);
         this.addToMatrix(matrix);
     }
 
     @Override
-    public void subtractfromMatrix(Integer subtractend) {
+    public void subtractFromMatrix(Integer subtractend) {
         this.addToMatrix(-(subtractend));
     }
 
@@ -118,13 +118,13 @@ public class IntMatrix implements Matrix<Integer> {
 
     @Override
     public void push(Integer val) {
-        if (cursor[0] >= getRows()) {
-            throw new IndexOutOfBoundsException("Cursor is in an invalid location");
-        }
-
         if (cursor[1] >= getColumns() && cursor[0] < getRows()) {
             cursor[0]++;
             cursor[1] = 0;
+        }
+
+        if (cursor[0] >= getRows()) {
+            throw new IndexOutOfBoundsException(String.format("Cursor location (%d, %d) out of bounds for matrix of size (%d, %d)", cursor[0], cursor[1], rows, columns));
         }
 
         this.put(cursor[0], cursor[1], val);

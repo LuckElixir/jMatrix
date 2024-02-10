@@ -1,6 +1,7 @@
 package personal.luckelixir.jmatrix;
 import java.util.concurrent.TimeUnit;
 
+
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("""
@@ -33,6 +34,7 @@ public class Main {
         System.out.println("This .jar file is meant to be used as a library.");
         System.out.println("Program will close down in 15 seconds");
         TimeUnit.SECONDS.sleep(15);
+
 
     }
 }
